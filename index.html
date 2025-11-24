@@ -4,1949 +4,554 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>女频小说创作引擎</title>
-    <!-- Tailwind CSS v3 -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <!-- 统一的 Tailwind 配置 -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#E94F78',
-                        secondary: '#8A4FFF',
-                        accent: '#FF9F43',
-                        light: '#FFF5F7',
-                        dark: '#333355',
-                        success: '#28C76F',
-                        warning: '#FFA800',
-                        danger: '#EA5455',
-                        info: '#00CFE8',
-                        muted: '#6E7293'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        display: ['Playfair Display', 'serif']
-                    },
-                    boxShadow: {
-                        'soft': '0 4px 20px rgba(0, 0, 0, 0.05)',
-                        'hover': '0 10px 30px rgba(0, 0, 0, 0.1)'
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-in-out',
-                        'slide-up': 'slideUp 0.5s ease-in-out',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite'
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' }
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' }
-                        }
-                    }
-                }
-            }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #e74c3c;
+            --secondary: #3498db;
+            --success: #2ecc71;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --gray: #95a5a6;
         }
-    </script>
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .text-shadow {
-                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        h1 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        }
+        
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+        
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background: #2477b3;
+        }
+        
+        .btn-success {
+            background: var(--success);
+        }
+        
+        .btn-success:hover {
+            background: #27ae60;
+        }
+        
+        .output-area {
+            background: #f8f9fa;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            line-height: 1.8;
+            margin-top: 15px;
+            position: relative;
+        }
+        
+        .output-area h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .output-area p {
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+        
+        .platform-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .platform-badge-tomato {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .platform-badge-qimao {
+            background: #6bc4e2;
+            color: white;
+        }
+        
+        .platform-badge-jinping {
+            background: #a0d2ff;
+            color: var(--dark);
+        }
+        
+        .model-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+        }
+        
+        .status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--primary);
+            color: white;
+            padding: 8px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #c62828;
+        }
+        
+        @media (max-width: 768px) {
+            .card-content {
+                gap: 15px;
             }
-            .text-gradient {
-                background-clip: text;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-            .bg-blur {
-                backdrop-filter: blur(8px);
-                -webkit-backdrop-filter: blur(8px);
-            }
-            .scrollbar-hide::-webkit-scrollbar {
-                display: none;
-            }
-            .scrollbar-hide {
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-            }
-            .transition-all-300 {
-                transition: all 300ms ease-in-out;
+            
+            .input-group {
+                margin-bottom: 10px;
             }
         }
     </style>
 </head>
-<body class="bg-light text-dark min-h-screen flex flex-col">
-    <!-- 顶部导航栏 -->
-    <header class="bg-white shadow-soft sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
-            <div class="flex items-center space-x-2">
-                <i class="fa fa-book text-primary text-2xl"></i>
-                <h1 class="text-xl font-display font-bold text-gradient bg-gradient-to-r from-primary to-secondary">女频小说创作引擎</h1>
-            </div>
-            <div class="flex items-center space-x-4">
-                <button id="theme-toggle" class="p-2 rounded-full hover:bg-light transition-all-300">
-                    <i class="fa fa-moon-o text-muted"></i>
-                </button>
-                <button id="help-button" class="p-2 rounded-full hover:bg-light transition-all-300">
-                    <i class="fa fa-question-circle text-muted"></i>
-                </button>
-                <div class="relative">
-                    <button id="user-menu" class="flex items-center space-x-1 p-2 rounded-full hover:bg-light transition-all-300">
-                        <span class="hidden md:inline text-sm font-medium">作者大大</span>
-                        <i class="fa fa-user-circle text-muted text-xl"></i>
-                    </button>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-book"></i> 女频小说创作引擎</h1>
+            <p class="subtitle">自动化创作女频长篇小说，精准适配番茄、七猫、晋江平台，确保黄金三章快速引入冲突，建立人物形象</p>
+        </header>
+        
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-lightbulb"></i> 项目初始化</h2>
+            <div class="card-content">
+                <div class="input-group">
+                    <label for="story-title">小说标题</label>
+                    <input type="text" id="story-title" placeholder="例如：《职场逆袭：从实习生到CEO》">
                 </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- 主要内容区域 -->
-    <main class="flex-grow flex">
-        <!-- 左侧导航 -->
-        <aside class="w-16 md:w-64 bg-white shadow-soft h-[calc(100vh-64px)] sticky top-16 flex flex-col">
-            <nav class="flex-grow py-4">
-                <ul>
-                    <li class="mb-1">
-                        <a href="#dashboard" class="nav-link active flex items-center px-4 py-3 text-primary border-r-4 border-primary bg-pink-50">
-                            <i class="fa fa-dashboard w-6 text-center"></i>
-                            <span class="ml-3 hidden md:inline">创作仪表盘</span>
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <a href="#projects" class="nav-link flex items-center px-4 py-3 text-muted hover:text-primary hover:bg-pink-50 transition-all-300">
-                            <i class="fa fa-folder-open w-6 text-center"></i>
-                            <span class="ml-3 hidden md:inline">我的项目</span>
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <a href="#knowledge" class="nav-link flex items-center px-4 py-3 text-muted hover:text-primary hover:bg-pink-50 transition-all-300">
-                            <i class="fa fa-book w-6 text-center"></i>
-                            <span class="ml-3 hidden md:inline">知识库管理</span>
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <a href="#outline" class="nav-link flex items-center px-4 py-3 text-muted hover:text-primary hover:bg-pink-50 transition-all-300">
-                            <i class="fa fa-list w-6 text-center"></i>
-                            <span class="ml-3 hidden md:inline">大纲生成</span>
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <a href="#writing" class="nav-link flex items-center px-4 py-3 text-muted hover:text-primary hover:bg-pink-50 transition-all-300">
-                            <i class="fa fa-pencil w-6 text-center"></i>
-                            <span class="ml-3 hidden md:inline">内容创作</span>
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <a href="#quality" class="nav-link flex items-center px-4 py-3 text-muted hover:text-primary hover:bg-pink-50 transition-all-300">
-                            <i class="fa fa-check-square-o w-6 text-center"></i>
-                            <span class="ml-3 hidden md:inline">质量检查</span>
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <a href="#settings" class="nav-link flex items-center px-4 py-3 text-muted hover:text-primary hover:bg-pink-50 transition-all-300">
-                            <i class="fa fa-cog w-6 text-center"></i>
-                            <span class="ml-3 hidden md:inline">系统设置</span>
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <a href="#ai-models" class="nav-link flex items-center px-4 py-3 text-muted hover:text-primary hover:bg-pink-50 transition-all-300">
-                            <i class="fa fa-robot w-6 text-center"></i>
-                            <span class="ml-3 hidden md:inline">AI模型设置</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="p-4 border-t border-gray-100 hidden md:block">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white">
-                        <i class="fa fa-lightbulb-o"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs text-muted">需要灵感？</p>
-                        <p class="text-sm font-medium">查看创作指南</p>
-                    </div>
+                
+                <div class="input-group">
+                    <label for="story-genre">故事类型</label>
+                    <select id="story-genre">
+                        <option value="">请选择类型</option>
+                        <option value="职场">职场</option>
+                        <option value="校园">校园</option>
+                        <option value="豪门">豪门</option>
+                        <option value="甜宠">甜宠</option>
+                        <option value="悬疑">悬疑</option>
+                        <option value="重生">重生</option>
+                    </select>
                 </div>
-            </div>
-        </aside>
-
-        <!-- 中央内容区 -->
-        <div class="flex-grow overflow-auto p-6">
-            <!-- 仪表盘页面 -->
-            <section id="dashboard-page" class="page active">
-                <div class="mb-6">
-                    <h2 class="text-2xl font-display font-bold mb-2">欢迎回来，作者大大！</h2>
-                    <p class="text-muted">继续您的创作之旅，或者开始一个新的故事</p>
+                
+                <div class="input-group">
+                    <label for="story-summary">故事梗概</label>
+                    <textarea id="story-summary" rows="4" placeholder="请简述故事核心冲突和主要人物"></textarea>
                 </div>
-
-                <!-- 快速操作卡片 -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div class="bg-white rounded-xl shadow-soft p-6 hover:shadow-hover transition-all-300 cursor-pointer">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-medium">新建项目</h3>
-                            <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-primary">
-                                <i class="fa fa-plus"></i>
-                            </div>
-                        </div>
-                        <p class="text-sm text-muted">开始一个全新的小说创作项目</p>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-soft p-6 hover:shadow-hover transition-all-300 cursor-pointer">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-medium">继续创作</h3>
-                            <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-secondary">
-                                <i class="fa fa-pencil"></i>
-                            </div>
-                        </div>
-                        <p class="text-sm text-muted">继续您上次未完成的章节</p>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-soft p-6 hover:shadow-hover transition-all-300 cursor-pointer">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-medium">知识库</h3>
-                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-info">
-                                <i class="fa fa-book"></i>
-                            </div>
-                        </div>
-                        <p class="text-sm text-muted">浏览写作素材和平台规则</p>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-soft p-6 hover:shadow-hover transition-all-300 cursor-pointer">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-medium">质量检查</h3>
-                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-success">
-                                <i class="fa fa-check-square-o"></i>
-                            </div>
-                        </div>
-                        <p class="text-sm text-muted">检查您的作品是否符合平台要求</p>
-                    </div>
-                </div>
-
-                <!-- 最近项目 -->
-                <div class="bg-white rounded-xl shadow-soft p-6 mb-8">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="font-bold text-lg">最近项目</h3>
-                        <a href="#projects" class="text-primary text-sm hover:underline">查看全部</a>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full">
-                            <thead>
-                                <tr class="border-b border-gray-100">
-                                    <th class="text-left py-3 px-4 text-sm font-medium text-muted">项目名称</th>
-                                    <th class="text-left py-3 px-4 text-sm font-medium text-muted">类型</th>
-                                    <th class="text-left py-3 px-4 text-sm font-medium text-muted">目标平台</th>
-                                    <th class="text-left py-3 px-4 text-sm font-medium text-muted">进度</th>
-                                    <th class="text-left py-3 px-4 text-sm font-medium text-muted">最后编辑</th>
-                                    <th class="text-right py-3 px-4 text-sm font-medium text-muted">操作</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-b border-gray-100 hover:bg-light transition-all-300">
-                                    <td class="py-3 px-4">
-                                        <div class="flex items-center">
-                                            <div class="w-8 h-8 rounded bg-pink-100 flex items-center justify-center text-primary mr-3">
-                                                <i class="fa fa-file-text-o"></i>
-                                            </div>
-                                            <span class="font-medium">《总裁的契约甜心》</span>
-                                        </div>
-                                    </td>
-                                    <td class="py-3 px-4 text-sm">现代言情</td>
-                                    <td class="py-3 px-4">
-                                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">番茄小说</span>
-                                    </td>
-                                    <td class="py-3 px-4">
-                                        <div class="w-full bg-gray-200 rounded-full h-2">
-                                            <div class="bg-primary h-2 rounded-full" style="width: 65%"></div>
-                                        </div>
-                                        <span class="text-xs text-muted">65%</span>
-                                    </td>
-                                    <td class="py-3 px-4 text-sm text-muted">今天 14:30</td>
-                                    <td class="py-3 px-4 text-right">
-                                        <button class="text-primary hover:text-pink-700 mr-3">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                        <button class="text-muted hover:text-gray-600">
-                                            <i class="fa fa-ellipsis-v"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="border-b border-gray-100 hover:bg-light transition-all-300">
-                                    <td class="py-3 px-4">
-                                        <div class="flex items-center">
-                                            <div class="w-8 h-8 rounded bg-purple-100 flex items-center justify-center text-secondary mr-3">
-                                                <i class="fa fa-file-text-o"></i>
-                                            </div>
-                                            <span class="font-medium">《重生嫡女：锦绣医妃》</span>
-                                        </div>
-                                    </td>
-                                    <td class="py-3 px-4 text-sm">古代言情</td>
-                                    <td class="py-3 px-4">
-                                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">七猫小说</span>
-                                    </td>
-                                    <td class="py-3 px-4">
-                                        <div class="w-full bg-gray-200 rounded-full h-2">
-                                            <div class="bg-secondary h-2 rounded-full" style="width: 30%"></div>
-                                        </div>
-                                        <span class="text-xs text-muted">30%</span>
-                                    </td>
-                                    <td class="py-3 px-4 text-sm text-muted">昨天 09:15</td>
-                                    <td class="py-3 px-4 text-right">
-                                        <button class="text-primary hover:text-pink-700 mr-3">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                        <button class="text-muted hover:text-gray-600">
-                                            <i class="fa fa-ellipsis-v"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-light transition-all-300">
-                                    <td class="py-3 px-4">
-                                        <div class="flex items-center">
-                                            <div class="w-8 h-8 rounded bg-blue-100 flex items-center justify-center text-info mr-3">
-                                                <i class="fa fa-file-text-o"></i>
-                                            </div>
-                                            <span class="font-medium">《星际迷航：指挥官的恋人》</span>
-                                        </div>
-                                    </td>
-                                    <td class="py-3 px-4 text-sm">科幻言情</td>
-                                    <td class="py-3 px-4">
-                                        <span class="px-2 py-1 bg-pink-100 text-pink-800 text-xs rounded-full">晋江文学城</span>
-                                    </td>
-                                    <td class="py-3 px-4">
-                                        <div class="w-full bg-gray-200 rounded-full h-2">
-                                            <div class="bg-info h-2 rounded-full" style="width: 15%"></div>
-                                        </div>
-                                        <span class="text-xs text-muted">15%</span>
-                                    </td>
-                                    <td class="py-3 px-4 text-sm text-muted">3天前</td>
-                                    <td class="py-3 px-4 text-right">
-                                        <button class="text-primary hover:text-pink-700 mr-3">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                        <button class="text-muted hover:text-gray-600">
-                                            <i class="fa fa-ellipsis-v"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- 创作灵感 -->
-                <div class="bg-white rounded-xl shadow-soft p-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="font-bold text-lg">创作灵感</h3>
-                        <button class="text-primary text-sm hover:underline">刷新灵感</button>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="border border-gray-100 rounded-lg p-4 hover:border-primary transition-all-300">
-                            <h4 class="font-medium mb-2">今日题材推荐</h4>
-                            <p class="text-sm text-muted mb-3">2025年最受欢迎的女频题材：<span class="text-primary font-medium">女性互助+职场破局</span></p>
-                            <p class="text-sm">参考案例：《恶女互助小组》《当燃》等作品通过女性互助和职场成长获得高人气。</p>
-                        </div>
-                        <div class="border border-gray-100 rounded-lg p-4 hover:border-primary transition-all-300">
-                            <h4 class="font-medium mb-2">写作技巧</h4>
-                            <p class="text-sm text-muted mb-3">黄金三章法则：<span class="text-primary font-medium">快速引入冲突，建立人物形象</span></p>
-                            <p class="text-sm">女频小说开篇需在前三章内确立主角、核心冲突和故事基调，抓住读者注意力。</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 新建项目页面 -->
-            <section id="new-project-page" class="page hidden">
-                <div class="mb-6">
-                    <h2 class="text-2xl font-display font-bold mb-2">新建小说项目</h2>
-                    <p class="text-muted">创建一个新的小说创作项目，设置基本信息和创作参数</p>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-soft p-6 mb-8">
-                    <form id="new-project-form">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                            <div>
-                                <label for="project-title" class="block text-sm font-medium text-muted mb-2">小说标题</label>
-                                <input type="text" id="project-title" name="title" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="输入小说标题" required>
-                            </div>
-                            <div>
-                                <label for="project-genre" class="block text-sm font-medium text-muted mb-2">小说类型</label>
-                                <select id="project-genre" name="genre" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
-                                    <option value="">选择类型</option>
-                                    <option value="modern_romance">现代言情</option>
-                                    <option value="ancient_romance">古代言情</option>
-                                    <option value="fantasy_romance">幻想言情</option>
-                                    <option value="sci_fi_romance">科幻言情</option>
-                                    <option value="time_travel">穿越重生</option>
-                                    <option value="historical">历史传奇</option>
-                                    <option value="urban">都市生活</option>
-                                    <option value="suspense">悬疑推理</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="mb-6">
-                            <label for="project-platform" class="block text-sm font-medium text-muted mb-2">目标平台</label>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-primary hover:bg-pink-50 transition-all-300 platform-option">
-                                    <input type="radio" id="platform-tomato" name="platform" value="tomato" class="hidden" required>
-                                    <label for="platform-tomato" class="flex flex-col items-center cursor-pointer">
-                                        <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-500 mb-3">
-                                            <i class="fa fa-fire text-xl"></i>
-                                        </div>
-                                        <span class="font-medium">番茄小说</span>
-                                        <span class="text-xs text-muted mt-1">节奏快，爽点密集</span>
-                                    </label>
-                                </div>
-                                <div class="border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-primary hover:bg-pink-50 transition-all-300 platform-option">
-                                    <input type="radio" id="platform-qimao" name="platform" value="qimao" class="hidden">
-                                    <label for="platform-qimao" class="flex flex-col items-center cursor-pointer">
-                                        <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-500 mb-3">
-                                            <i class="fa fa-diamond text-xl"></i>
-                                        </div>
-                                        <span class="font-medium">七猫小说</span>
-                                        <span class="text-xs text-muted mt-1">免费阅读，广告分成</span>
-                                    </label>
-                                </div>
-                                <div class="border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-primary hover:bg-pink-50 transition-all-300 platform-option">
-                                    <input type="radio" id="platform-jjwxc" name="platform" value="jjwxc" class="hidden">
-                                    <label for="platform-jjwxc" class="flex flex-col items-center cursor-pointer">
-                                        <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-500 mb-3">
-                                            <i class="fa fa-book text-xl"></i>
-                                        </div>
-                                        <span class="font-medium">晋江文学城</span>
-                                        <span class="text-xs text-muted mt-1">注重文笔，读者粘性高</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-6">
-                            <label for="project-description" class="block text-sm font-medium text-muted mb-2">故事简介</label>
-                            <textarea id="project-description" name="description" rows="4" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="简要描述你的故事内容和核心亮点"></textarea>
-                        </div>
-
-                        <div class="mb-6">
-                            <label class="block text-sm font-medium text-muted mb-2">创作偏好</label>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm text-muted mb-2">叙事节奏</label>
-                                    <select class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                                        <option value="fast">快节奏（适合番茄）</option>
-                                        <option value="medium" selected>中等节奏（适合七猫）</option>
-                                        <option value="slow">慢节奏（适合晋江）</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm text-muted mb-2">情感基调</label>
-                                    <select class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                                        <option value="sweet">甜宠为主</option>
-                                        <option value="sad">虐恋情深</option>
-                                        <option value="balanced" selected>甜虐交织</option>
-                                        <option value="drama">强情节冲突</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex justify-end space-x-4">
-                            <button type="button" class="px-6 py-2 border border-gray-200 rounded-lg text-muted hover:bg-light transition-all-300">取消</button>
-                            <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-pink-600 transition-all-300">创建项目</button>
-                        </div>
-                    </form>
-                </div>
-            </section>
-
-            <!-- 知识库页面 -->
-            <section id="knowledge-page" class="page hidden">
-                <div class="mb-6">
-                    <h2 class="text-2xl font-display font-bold mb-2">知识库管理</h2>
-                    <p class="text-muted">管理您的写作素材、平台规则和创作指南</p>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-soft p-6 mb-8">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="font-bold text-lg">知识库分类</h3>
-                        <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-pink-600 transition-all-300">
-                            <i class="fa fa-upload mr-2"></i>上传素材
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                        <div class="border border-gray-200 rounded-lg p-4 hover:border-primary hover:shadow-soft transition-all-300">
-                            <div class="flex items-center justify-between mb-4">
-                                <h4 class="font-medium">平台规则库</h4>
-                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">3个文档</span>
-                            </div>
-                            <p class="text-sm text-muted mb-4">包含各平台的规则要求、风格特点和禁忌内容</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-xs text-muted">最近更新: 2025-11-20</span>
-                                <button class="text-primary hover:text-pink-700">
-                                    <i class="fa fa-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-lg p-4 hover:border-primary hover:shadow-soft transition-all-300">
-                            <div class="flex items-center justify-between mb-4">
-                                <h4 class="font-medium">写作技巧库</h4>
-                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">5个文档</span>
-                            </div>
-                            <p class="text-sm text-muted mb-4">包含女频小说写作技巧、情节设计和人物塑造方法</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-xs text-muted">最近更新: 2025-11-18</span>
-                                <button class="text-primary hover:text-pink-700">
-                                    <i class="fa fa-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-lg p-4 hover:border-primary hover:shadow-soft transition-all-300">
-                            <div class="flex items-center justify-between mb-4">
-                                <h4 class="font-medium">题材素材库</h4>
-                                <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">8个文档</span>
-                            </div>
-                            <p class="text-sm text-muted mb-4">包含各类题材的设定、常见元素和创新方向</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-xs text-muted">最近更新: 2025-11-15</span>
-                                <button class="text-primary hover:text-pink-700">
-                                    <i class="fa fa-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="border-t border-gray-100 pt-6">
-                        <h3 class="font-bold text-lg mb-4">最近访问的素材</h3>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full">
-                                <thead>
-                                    <tr class="border-b border-gray-100">
-                                        <th class="text-left py-3 px-4 text-sm font-medium text-muted">素材名称</th>
-                                        <th class="text-left py-3 px-4 text-sm font-medium text-muted">分类</th>
-                                        <th class="text-left py-3 px-4 text-sm font-medium text-muted">上传时间</th>
-                                        <th class="text-left py-3 px-4 text-sm font-medium text-muted">大小</th>
-                                        <th class="text-right py-3 px-4 text-sm font-medium text-muted">操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="border-b border-gray-100 hover:bg-light transition-all-300">
-                                        <td class="py-3 px-4">
-                                            <div class="flex items-center">
-                                                <i class="fa fa-file-text-o text-primary mr-3"></i>
-                                                <span>番茄小说平台规则2025</span>
-                                            </div>
-                                        </td>
-                                        <td class="py-3 px-4 text-sm">平台规则库</td>
-                                        <td class="py-3 px-4 text-sm text-muted">2025-11-20</td>
-                                        <td class="py-3 px-4 text-sm text-muted">25KB</td>
-                                        <td class="py-3 px-4 text-right">
-                                            <button class="text-primary hover:text-pink-700 mr-3">
-                                                <i class="fa fa-eye"></i>
-                                            </button>
-                                            <button class="text-muted hover:text-gray-600 mr-3">
-                                                <i class="fa fa-download"></i>
-                                            </button>
-                                            <button class="text-muted hover:text-gray-600">
-                                                <i class="fa fa-ellipsis-v"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr class="border-b border-gray-100 hover:bg-light transition-all-300">
-                                        <td class="py-3 px-4">
-                                            <div class="flex items-center">
-                                                <i class="fa fa-file-text-o text-secondary mr-3"></i>
-                                                <span>女频小说黄金三章写作技巧</span>
-                                            </div>
-                                        </td>
-                                        <td class="py-3 px-4 text-sm">写作技巧库</td>
-                                        <td class="py-3 px-4 text-sm text-muted">2025-11-18</td>
-                                        <td class="py-3 px-4 text-sm text-muted">18KB</td>
-                                        <td class="py-3 px-4 text-right">
-                                            <button class="text-primary hover:text-pink-700 mr-3">
-                                                <i class="fa fa-eye"></i>
-                                            </button>
-                                            <button class="text-muted hover:text-gray-600 mr-3">
-                                                <i class="fa fa-download"></i>
-                                            </button>
-                                            <button class="text-muted hover:text-gray-600">
-                                                <i class="fa fa-ellipsis-v"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-light transition-all-300">
-                                        <td class="py-3 px-4">
-                                            <div class="flex items-center">
-                                                <i class="fa fa-file-text-o text-info mr-3"></i>
-                                                <span>2025年女频热门题材分析</span>
-                                            </div>
-                                        </td>
-                                        <td class="py-3 px-4 text-sm">题材素材库</td>
-                                        <td class="py-3 px-4 text-sm text-muted">2025-11-15</td>
-                                        <td class="py-3 px-4 text-sm text-muted">32KB</td>
-                                        <td class="py-3 px-4 text-right">
-                                            <button class="text-primary hover:text-pink-700 mr-3">
-                                                <i class="fa fa-eye"></i>
-                                            </button>
-                                            <button class="text-muted hover:text-gray-600 mr-3">
-                                                <i class="fa fa-download"></i>
-                                            </button>
-                                            <button class="text-muted hover:text-gray-600">
-                                                <i class="fa fa-ellipsis-v"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-soft p-6">
-                    <h3 class="font-bold text-lg mb-4">平台特色知识库</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="border border-gray-200 rounded-lg overflow-hidden">
-                            <div class="h-32 bg-gradient-to-r from-red-400 to-red-600 flex items-center justify-center">
-                                <i class="fa fa-fire text-white text-4xl"></i>
-                            </div>
-                            <div class="p-4">
-                                <h4 class="font-medium mb-2">番茄小说平台规则</h4>
-                                <p class="text-sm text-muted mb-4">了解番茄小说的内容要求、风格特点和推荐机制</p>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-xs text-muted">更新于: 2025-11-20</span>
-                                    <button class="px-3 py-1 border border-primary text-primary rounded-lg text-sm hover:bg-primary hover:text-white transition-all-300">
-                                        查看详情
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-lg overflow-hidden">
-                            <div class="h-32 bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center">
-                                <i class="fa fa-diamond text-white text-4xl"></i>
-                            </div>
-                            <div class="p-4">
-                                <h4 class="font-medium mb-2">七猫小说平台规则</h4>
-                                <p class="text-sm text-muted mb-4">了解七猫小说的内容要求、风格特点和推荐机制</p>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-xs text-muted">更新于: 2025-11-19</span>
-                                    <button class="px-3 py-1 border border-primary text-primary rounded-lg text-sm hover:bg-primary hover:text-white transition-all-300">
-                                        查看详情
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-lg overflow-hidden">
-                            <div class="h-32 bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center">
-                                <i class="fa fa-book text-white text-4xl"></i>
-                            </div>
-                            <div class="p-4">
-                                <h4 class="font-medium mb-2">晋江文学城平台规则</h4>
-                                <p class="text-sm text-muted mb-4">了解晋江文学城的内容要求、风格特点和推荐机制</p>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-xs text-muted">更新于: 2025-11-18</span>
-                                    <button class="px-3 py-1 border border-primary text-primary rounded-lg text-sm hover:bg-primary hover:text-white transition-all-300">
-                                        查看详情
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 大纲生成页面 -->
-            <section id="outline-page" class="page hidden">
-                <div class="mb-6">
-                    <h2 class="text-2xl font-display font-bold mb-2">大纲生成</h2>
-                    <p class="text-muted">根据您的故事构思，生成符合平台要求的小说大纲</p>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-soft p-6 mb-8">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="font-bold text-lg">故事基本信息</h3>
-                        <div class="flex space-x-2">
-                            <div class="relative">
-                                <select class="appearance-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                                    <option value="creative_flow">CreativeFlow（默认）</option>
-                                    <option value="plot_weaver">PlotWeaver</option>
-                                    <option value="novel_architect">NovelArchitect</option>
-                                </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-muted">
-                                    <i class="fa fa-chevron-down text-xs"></i>
-                                </div>
-                            </div>
-                            <button class="px-3 py-1 border border-gray-200 rounded-lg text-muted hover:bg-light transition-all-300">
-                                <i class="fa fa-save mr-1"></i>保存
-                            </button>
-                            <button class="px-3 py-1 bg-primary text-white rounded-lg hover:bg-pink-600 transition-all-300">
-                                <i class="fa fa-magic mr-1"></i>生成大纲
-                            </button>
-                        </div>
-                    </div>
-                    <div class="mb-4 bg-blue-50 border border-blue-100 rounded-lg p-3">
-                        <div class="flex items-start">
-                            <i class="fa fa-info-circle text-info mt-0.5 mr-2"></i>
-                            <div>
-                                <p class="text-sm"><strong>当前模型：CreativeFlow</strong> - 擅长生成连贯的情节线和人物弧线，适合需要强情节连贯性的小说。</p>
-                                <p class="text-xs text-muted mt-1">提示：您可以在<a href="#ai-models" class="text-primary hover:underline">AI模型设置</a>中配置默认模型。</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label for="outline-title" class="block text-sm font-medium text-muted mb-2">小说标题</label>
-                            <input type="text" id="outline-title" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="输入小说标题">
-                        </div>
-                        <div>
-                            <label for="outline-genre" class="block text-sm font-medium text-muted mb-2">小说类型</label>
-                            <select id="outline-genre" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                                <option value="">选择类型</option>
-                                <option value="modern_romance">现代言情</option>
-                                <option value="ancient_romance">古代言情</option>
-                                <option value="fantasy_romance">幻想言情</option>
-                                <option value="sci_fi_romance">科幻言情</option>
-                                <option value="time_travel">穿越重生</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="mb-6">
-                        <label for="outline-platform" class="block text-sm font-medium text-muted mb-2">目标平台</label>
-                        <div class="flex flex-wrap gap-4">
-                            <div class="flex items-center">
-                                <input type="radio" id="outline-platform-tomato" name="outline-platform" value="tomato" class="mr-2">
-                                <label for="outline-platform-tomato">番茄小说</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="radio" id="outline-platform-qimao" name="outline-platform" value="qimao" class="mr-2">
-                                <label for="outline-platform-qimao">七猫小说</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="radio" id="outline-platform-jjwxc" name="outline-platform" value="jjwxc" class="mr-2">
-                                <label for="outline-platform-jjwxc">晋江文学城</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-6">
-                        <label for="outline-description" class="block text-sm font-medium text-muted mb-2">故事简介</label>
-                        <textarea id="outline-description" rows="4" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="简要描述你的故事内容和核心亮点"></textarea>
-                    </div>
-
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-muted mb-2">主要人物</label>
-                        <div class="border border-gray-200 rounded-lg p-4">
-                            <div class="mb-4 pb-4 border-b border-gray-100">
-                                <div class="flex justify-between items-center mb-2">
-                                    <h4 class="font-medium">女主角</h4>
-                                    <button class="text-primary hover:text-pink-700 text-sm">
-                                        <i class="fa fa-edit"></i>
-                                    </button>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-xs text-muted mb-1">姓名</label>
-                                        <input type="text" class="w-full px-3 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="输入女主角姓名">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs text-muted mb-1">身份/职业</label>
-                                        <input type="text" class="w-full px-3 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="输入身份或职业">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs text-muted mb-1">性格特点</label>
-                                        <input type="text" class="w-full px-3 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="输入性格特点">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs text-muted mb-1">核心动机</label>
-                                        <input type="text" class="w-full px-3 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="输入核心动机">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-4 pb-4 border-b border-gray-100">
-                                <div class="flex justify-between items-center mb-2">
-                                    <h4 class="font-medium">男主角</h4>
-                                    <button class="text-primary hover:text-pink-700 text-sm">
-                                        <i class="fa fa-edit"></i>
-                                    </button>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-xs text-muted mb-1">姓名</label>
-                                        <input type="text" class="w-full px-3 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="输入男主角姓名">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs text-muted mb-1">身份/职业</label>
-                                        <input type="text" class="w-full px-3 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="输入身份或职业">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs text-muted mb-1">性格特点</label>
-                                        <input type="text" class="w-full px-3 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="输入性格特点">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs text-muted mb-1">核心动机</label>
-                                        <input type="text" class="w-full px-3 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="输入核心动机">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex justify-center">
-                                <button class="px-3 py-1 border border-dashed border-gray-300 rounded-lg text-muted hover:text-primary hover:border-primary transition-all-300">
-                                    <i class="fa fa-plus mr-1"></i>添加次要人物
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-6">
-                        <label for="outline-conflict" class="block text-sm font-medium text-muted mb-2">核心冲突</label>
-                        <textarea id="outline-conflict" rows="2" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="描述故事的核心冲突和主要矛盾"></textarea>
-                    </div>
-
-                    <div class="mb-6">
-                        <label for="outline-theme" class="block text-sm font-medium text-muted mb-2">主题思想</label>
-                        <textarea id="outline-theme" rows="2" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="描述故事想要表达的主题和思想"></textarea>
-                    </div>
-
-                    <div class="flex justify-end space-x-4">
-                        <button class="px-6 py-2 border border-gray-200 rounded-lg text-muted hover:bg-light transition-all-300">取消</button>
-                        <button class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-pink-600 transition-all-300">生成大纲</button>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-soft p-6">
-                    <h3 class="font-bold text-lg mb-4">生成的大纲</h3>
-                    <div class="border border-gray-200 rounded-lg overflow-hidden">
-                        <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
-                            <h4 class="font-medium">《总裁的契约甜心》大纲</h4>
-                            <div class="flex space-x-2">
-                                <button class="px-2 py-1 border border-gray-200 rounded text-xs text-muted hover:bg-light transition-all-300">
-                                    <i class="fa fa-download mr-1"></i>导出
-                                </button>
-                                <button class="px-2 py-1 border border-gray-200 rounded text-xs text-muted hover:bg-light transition-all-300">
-                                    <i class="fa fa-share-alt mr-1"></i>分享
-                                </button>
-                            </div>
-                        </div>
-                        <div class="p-4 max-h-96 overflow-y-auto">
-                            <div class="mb-4">
-                                <h5 class="font-medium text-primary mb-2">第一卷：契约婚姻</h5>
-                                <ul class="list-disc pl-5 space-y-1 text-sm">
-                                    <li>第1章：家族危机，被迫联姻</li>
-                                    <li>第2章：冷漠总裁的契约条件</li>
-                                    <li>第3章：第一次公开亮相</li>
-                                    <li>第4章：总裁的神秘前女友</li>
-                                    <li>第5章：契约下的心动瞬间</li>
-                                    <li>第6章：家族聚会上的刁难</li>
-                                    <li>第7章：总裁的意外维护</li>
-                                    <li>第8章：契约关系的微妙变化</li>
-                                    <li>第9章：共同出席商业活动</li>
-                                    <li>第10章：第一卷小结与悬念</li>
-                                </ul>
-                            </div>
-                            <div class="mb-4">
-                                <h5 class="font-medium text-primary mb-2">第二卷：感情升温</h5>
-                                <ul class="list-disc pl-5 space-y-1 text-sm">
-                                    <li>第11章：总裁的秘密过去</li>
-                                    <li>第12章：女主角的才华展现</li>
-                                    <li>第13章：误会与吃醋</li>
-                                    <li>第14章：共同应对危机</li>
-                                    <li>第15章：契约外的亲密接触</li>
-                                    <li>第16章：男二号的出现</li>
-                                    <li>第17章：总裁的占有欲</li>
-                                    <li>第18章：感情的确认与挣扎</li>
-                                    <li>第19章：见家长的紧张时刻</li>
-                                    <li>第20章：第二卷小结与悬念</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h5 class="font-medium text-primary mb-2">第三卷：真相与抉择</h5>
-                                <ul class="list-disc pl-5 space-y-1 text-sm">
-                                    <li>第21章：契约的真相</li>
-                                    <li>第22章：家族阴谋的揭露</li>
-                                    <li>第23章：女主角的离开</li>
-                                    <li>第24章：总裁的追妻之路</li>
-                                    <li>第25章：解开过去的心结</li>
-                                    <li>第26章：共同面对最终危机</li>
-                                    <li>第27章：误会的彻底澄清</li>
-                                    <li>第28章：感情的最终确认</li>
-                                    <li>第29章：反派的最终结局</li>
-                                    <li>第30章：圆满结局与番外</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 内容创作页面 -->
-            <section id="writing-page" class="page hidden">
-                <div class="mb-6">
-                    <h2 class="text-2xl font-display font-bold mb-2">内容创作</h2>
-                    <p class="text-muted">根据大纲生成章节内容，并进行编辑和润色</p>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                    <div class="lg:col-span-1">
-                        <div class="bg-white rounded-xl shadow-soft p-4 sticky top-24">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold">章节导航</h3>
-                                <button class="text-primary hover:text-pink-700">
-                                    <i class="fa fa-refresh"></i>
-                                </button>
-                            </div>
-                            <div class="mb-4">
-                                <div class="relative">
-                                    <input type="text" class="w-full px-3 py-2 pl-8 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="搜索章节...">
-                                    <i class="fa fa-search absolute left-3 top-3 text-muted"></i>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <h4 class="text-sm font-medium text-muted mb-2">第一卷：契约婚姻</h4>
-                                <ul class="space-y-1">
-                                    <li>
-                                        <a href="#" class="flex items-center justify-between px-3 py-2 bg-pink-50 text-primary rounded-lg text-sm">
-                                            <span>第1章：家族危机，被迫联姻</span>
-                                            <span class="px-2 py-0.5 bg-primary bg-opacity-10 rounded-full text-xs">已完成</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="flex items-center justify-between px-3 py-2 hover:bg-light rounded-lg text-sm">
-                                            <span>第2章：冷漠总裁的契约条件</span>
-                                            <span class="px-2 py-0.5 bg-green-100 text-green-800 rounded-full text-xs">进行中</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="flex items-center justify-between px-3 py-2 hover:bg-light rounded-lg text-sm">
-                                            <span>第3章：第一次公开亮相</span>
-                                            <span class="px-2 py-0.5 bg-gray-100 text-gray-800 rounded-full text-xs">未开始</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="flex items-center justify-between px-3 py-2 hover:bg-light rounded-lg text-sm">
-                                            <span>第4章：总裁的神秘前女友</span>
-                                            <span class="px-2 py-0.5 bg-gray-100 text-gray-800 rounded-full text-xs">未开始</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="flex items-center justify-between px-3 py-2 hover:bg-light rounded-lg text-sm">
-                                            <span>第5章：契约下的心动瞬间</span>
-                                            <span class="px-2 py-0.5 bg-gray-100 text-gray-800 rounded-full text-xs">未开始</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-medium text-muted mb-2">第二卷：感情升温</h4>
-                                <ul class="space-y-1">
-                                    <li>
-                                        <a href="#" class="flex items-center justify-between px-3 py-2 hover:bg-light rounded-lg text-sm">
-                                            <span>第11章：总裁的秘密过去</span>
-                                            <span class="px-2 py-0.5 bg-gray-100 text-gray-800 rounded-full text-xs">未开始</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="flex items-center justify-between px-3 py-2 hover:bg-light rounded-lg text-sm">
-                                            <span>第12章：女主角的才华展现</span>
-                                            <span class="px-2 py-0.5 bg-gray-100 text-gray-800 rounded-full text-xs">未开始</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="mt-6 pt-4 border-t border-gray-100">
-                                <button class="w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-pink-600 transition-all-300">
-                                    <i class="fa fa-plus mr-2"></i>新增章节
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="lg:col-span-3">
-                        <div class="bg-white rounded-xl shadow-soft p-6 mb-6">
-                            <div class="flex items-center justify-between mb-6">
-                                <div>
-                                    <h3 class="font-bold text-lg">第2章：冷漠总裁的契约条件</h3>
-                                    <p class="text-sm text-muted">第一卷：契约婚姻</p>
-                                </div>
-                                <div class="flex space-x-2">
-                                    <div class="relative">
-                                        <select class="appearance-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                                            <option value="detail_master">DetailMaster（默认）</option>
-                                            <option value="scene_crafter">SceneCrafter</option>
-                                            <option value="prose_genius">ProseGenius</option>
-                                        </select>
-                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-muted">
-                                            <i class="fa fa-chevron-down text-xs"></i>
-                                        </div>
-                                    </div>
-                                    <button class="px-3 py-1 border border-gray-200 rounded-lg text-muted hover:bg-light transition-all-300">
-                                        <i class="fa fa-eye mr-1"></i>预览
-                                    </button>
-                                    <button class="px-3 py-1 border border-gray-200 rounded-lg text-muted hover:bg-light transition-all-300">
-                                        <i class="fa fa-history mr-1"></i>历史版本
-                                    </button>
-                                    <button class="px-3 py-1 bg-primary text-white rounded-lg hover:bg-pink-600 transition-all-300">
-                                        <i class="fa fa-save mr-1"></i>保存
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="mb-4 bg-blue-50 border border-blue-100 rounded-lg p-3">
-                                <div class="flex items-start">
-                                    <i class="fa fa-info-circle text-info mt-0.5 mr-2"></i>
-                                    <div>
-                                        <p class="text-sm"><strong>当前模型：DetailMaster</strong> - 擅长生成生动的场景描写和人物细节，适合需要丰富画面感的小说。</p>
-                                        <p class="text-xs text-muted mt-1">提示：您可以在<a href="#ai-models" class="text-primary hover:underline">AI模型设置</a>中配置默认模型。</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-6">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h4 class="font-medium">章节内容</h4>
-                                    <div class="flex items-center space-x-4">
-                                        <div class="flex items-center">
-                                            <span class="text-sm text-muted mr-2">字数：</span>
-                                            <span class="text-sm font-medium">1,248</span>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <span class="text-sm text-muted mr-2">预计阅读时间：</span>
-                                            <span class="text-sm font-medium">5分钟</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="border border-gray-200 rounded-lg p-4 mb-4">
-                                    <textarea id="chapter-content" rows="15" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="在此输入章节内容...">
-林晚站在顾氏集团顶层办公室的门口，手心微微出汗。她深吸一口气，推开了那扇沉重的实木门。
-
-办公室内部装修极简而奢华，巨大的落地窗外是繁华的都市景象，而办公桌后坐着的男人，正是顾氏集团的总裁顾晏廷。
-
-他抬起头，深邃的眼眸如同寒潭，没有任何温度。"林小姐，请坐。"他的声音低沉而富有磁性，却带着拒人于千里之外的冷漠。
-
-林晚在他对面的椅子上坐下，尽量让自己的声音听起来平静："顾总，关于我们两家公司的合作，以及...我们之间的协议，我想和您谈谈。"
-
-顾晏廷嘴角勾起一抹嘲讽的弧度："林小姐，我想我们之间没有什么好谈的。协议已经拟好了，你只需要签字。"他将一份文件推到林晚面前。
-
-林晚拿起文件，手指微微颤抖。协议的内容她已经看过了，为期一年的契约婚姻，双方在公众面前扮演恩爱夫妻，私下互不干涉。作为回报，顾氏集团将注资濒临破产的林氏企业。
-
-"顾总，"林晚抬起头，迎上他冰冷的目光，"我知道这对您来说可能只是一场交易，但对我来说，这关系到我家族的命运。我希望我们能在某些细节上达成一致。"
-
-顾晏廷挑眉，似乎对她的"谈判"有些意外："哦？林小姐有什么条件？"
-
-林晚深吸一口气，说出了自己的想法："首先，我希望在公众面前保持必要的尊重，不希望出现任何可能损害我名誉的情况。其次，契约期间，我们需要定期沟通，确保合作顺利进行。最后..."
-
-她顿了顿，鼓起勇气说道："我希望您能真正了解一下林氏企业的价值，而不仅仅是将这次注资视为一场交易。"
-
-顾晏廷静静地听着，脸上没有任何表情。过了好一会儿，他才缓缓开口："可以。但我也有一个条件。"
-
-林晚的心提到了嗓子眼："请说。"
-
-"契约期间，你必须住在顾家老宅，和我一起参加所有必要的家族活动。"顾晏廷的声音没有一丝波澜，"这是我爷爷的要求，他希望看到我们'恩爱'的样子。"
-
-林晚愣住了。住在顾家老宅？这意味着他们将有更多的接触，更多的扮演...
-
-"怎么？林小姐不愿意？"顾晏廷的语气带着一丝玩味。
-
-林晚咬了咬下唇，想到濒临破产的家族企业，想到父母焦虑的眼神，她点了点头："我同意。"
-
-顾晏廷满意地笑了笑，那笑容却没有到达眼底："很好。那么，林小姐，可以签字了吗？"
-
-林晚拿起笔，指尖悬停在签名处。她知道，签下这个名字，她的人生将彻底改变。但为了家族，她别无选择。
-
-就在她即将落笔的瞬间，办公室的门被突然推开，一个穿着时尚的女人冲了进来，怒气冲冲地指着顾晏廷："晏廷！你要和这个女人结婚？你忘了我们之间的约定了吗？"
-
-林晚惊讶地看着这个不速之客，又看向顾晏廷。他的脸色瞬间变得阴沉，眼中闪过一丝不易察觉的慌乱。
-
-这个女人是谁？她和顾晏廷之间有什么约定？
-
-林晚的心中充满了疑惑，而她不知道的是，这场契约婚姻，从一开始就注定不会平静。
-                                    </textarea>
-                                </div>
-                                <div class="flex justify-between">
-                                    <button class="px-3 py-1 border border-gray-200 rounded-lg text-muted hover:bg-light transition-all-300">
-                                        <i class="fa fa-undo mr-1"></i>撤销
-                                    </button>
-                                    <div class="flex space-x-2">
-                                        <button class="px-3 py-1 border border-gray-200 rounded-lg text-muted hover:bg-light transition-all-300">
-                                            <i class="fa fa-magic mr-1"></i>AI润色
-                                        </button>
-                                        <button class="px-3 py-1 border border-gray-200 rounded-lg text-muted hover:bg-light transition-all-300">
-                                            <i class="fa fa-check-square-o mr-1"></i>质量检查
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="border-t border-gray-100 pt-6">
-                                <div class="flex justify-between items-center mb-4">
-                                    <h4 class="font-medium">创作工具</h4>
-                                    <button class="text-sm text-primary hover:underline">更多工具</button>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-all-300">
-                                        <h5 class="font-medium mb-2">AI续写</h5>
-                                        <p class="text-sm text-muted mb-3">根据当前内容，智能生成后续情节</p>
-                                        <div class="mb-3">
-                                            <select class="w-full px-3 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent">
-                                                <option value="scene_crafter">SceneCrafter（默认）</option>
-                                                <option value="detail_master">DetailMaster</option>
-                                                <option value="prose_genius">ProseGenius</option>
-                                            </select>
-                                        </div>
-                                        <button class="w-full px-3 py-1 border border-primary text-primary rounded-lg text-sm hover:bg-primary hover:text-white transition-all-300">
-                                            生成后续内容
-                                        </button>
-                                    </div>
-                                    <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-all-300">
-                                        <h5 class="font-medium mb-2">对话生成</h5>
-                                        <p class="text-sm text-muted mb-3">生成符合人物性格的对话内容</p>
-                                        <div class="mb-3">
-                                            <select class="w-full px-3 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent">
-                                                <option value="convo_craft">ConvoCraft（默认）</option>
-                                                <option value="dialogue_master">DialogueMaster</option>
-                                                <option value="character_voice">CharacterVoice</option>
-                                            </select>
-                                        </div>
-                                        <button class="w-full px-3 py-1 border border-primary text-primary rounded-lg text-sm hover:bg-primary hover:text-white transition-all-300">
-                                            生成对话
-                                        </button>
-                                    </div>
-                                    <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-all-300">
-                                        <h5 class="font-medium mb-2">文本润色</h5>
-                                        <p class="text-sm text-muted mb-3">优化文本表达，提升写作质量</p>
-                                        <div class="mb-3">
-                                            <select class="w-full px-3 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent">
-                                                <option value="polish_pro">PolishPro（默认）</option>
-                                                <option value="style_refiner">StyleRefiner</option>
-                                                <option value="clarity_booster">ClarityBooster</option>
-                                            </select>
-                                        </div>
-                                        <button class="w-full px-3 py-1 border border-primary text-primary rounded-lg text-sm hover:bg-primary hover:text-white transition-all-300">
-                                            开始润色
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-xl shadow-soft p-6">
-                            <h3 class="font-bold text-lg mb-4">质量检查结果</h3>
-                            <div class="border border-gray-200 rounded-lg overflow-hidden">
-                                <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
-                                    <h4 class="font-medium">检查报告</h4>
-                                    <span class="px-2 py-0.5 bg-green-100 text-green-800 rounded-full text-xs">通过</span>
-                                </div>
-                                <div class="p-4">
-                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                                        <div class="flex flex-col items-center p-3 bg-green-50 rounded-lg">
-                                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-success mb-2">
-                                                <i class="fa fa-check"></i>
-                                            </div>
-                                            <span class="text-sm font-medium">平台规则</span>
-                                            <span class="text-xs text-muted">符合番茄小说要求</span>
-                                        </div>
-                                        <div class="flex flex-col items-center p-3 bg-green-50 rounded-lg">
-                                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-success mb-2">
-                                                <i class="fa fa-check"></i>
-                                            </div>
-                                            <span class="text-sm font-medium">敏感词</span>
-                                            <span class="text-xs text-muted">未检测到敏感内容</span>
-                                        </div>
-                                        <div class="flex flex-col items-center p-3 bg-green-50 rounded-lg">
-                                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-success mb-2">
-                                                <i class="fa fa-check"></i>
-                                            </div>
-                                            <span class="text-sm font-medium">风格一致性</span>
-                                            <span class="text-xs text-muted">符合番茄小说风格</span>
-                                        </div>
-                                        <div class="flex flex-col items-center p-3 bg-green-50 rounded-lg">
-                                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-success mb-2">
-                                                <i class="fa fa-check"></i>
-                                            </div>
-                                            <span class="text-sm font-medium">人物一致性</span>
-                                            <span class="text-xs text-muted">人物设定一致</span>
-                                        </div>
-                                    </div>
-                                    <div class="border-t border-gray-100 pt-4">
-                                        <h5 class="font-medium mb-2">改进建议</h5>
-                                        <ul class="space-y-2 text-sm">
-                                            <li class="flex items-start">
-                                                <i class="fa fa-info-circle text-info mt-0.5 mr-2"></i>
-                                                <span>建议增加更多对话，提高章节的节奏感和可读性。</span>
-                                            </li>
-                                            <li class="flex items-start">
-                                                <i class="fa fa-info-circle text-info mt-0.5 mr-2"></i>
-                                                <span>可以适当增加一些环境描写，增强场景的画面感。</span>
-                                            </li>
-                                            <li class="flex items-start">
-                                                <i class="fa fa-info-circle text-info mt-0.5 mr-2"></i>
-                                                <span>建议在章节末尾增加一个更强的悬念，吸引读者继续阅读下一章。</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- AI模型设置页面 -->
-            <section id="ai-models-page" class="page hidden">
-                <div class="mb-6">
-                    <h2 class="text-2xl font-display font-bold mb-2">AI模型设置</h2>
-                    <p class="text-muted">为不同创作环节选择合适的AI模型，优化您的创作体验</p>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-soft p-6 mb-8">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="font-bold text-lg">全局模型设置</h3>
-                        <div class="flex space-x-2">
-                            <button class="px-3 py-1 border border-gray-200 rounded-lg text-muted hover:bg-light transition-all-300">
-                                <i class="fa fa-refresh mr-1"></i>恢复默认
-                            </button>
-                            <button class="px-3 py-1 bg-primary text-white rounded-lg hover:bg-pink-600 transition-all-300">
-                                <i class="fa fa-save mr-1"></i>保存设置
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="space-y-6">
-                        <!-- 大纲生成模型 -->
-                        <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-all-300">
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    <h4 class="font-medium">大纲生成</h4>
-                                    <p class="text-sm text-muted">选择用于生成小说大纲的AI模型</p>
-                                </div>
-                                <div class="relative">
-                                    <select class="appearance-none bg-white border border-gray-200 rounded-lg px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                                        <option value="creative_flow">CreativeFlow - 擅长情节连贯性</option>
-                                        <option value="plot_weaver">PlotWeaver - 擅长故事结构</option>
-                                        <option value="novel_architect">NovelArchitect - 擅长长篇小说架构</option>
-                                    </select>
-                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-muted">
-                                        <i class="fa fa-chevron-down text-xs"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="border border-gray-100 rounded-lg p-3 bg-light">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-primary mr-2">
-                                            <i class="fa fa-check"></i>
-                                        </div>
-                                        <h5 class="font-medium">CreativeFlow</h5>
-                                    </div>
-                                    <p class="text-xs text-muted">擅长生成连贯的情节线和人物弧线，适合需要强情节连贯性的小说。</p>
-                                </div>
-                                <div class="border border-gray-100 rounded-lg p-3">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-muted mr-2">
-                                            <i class="fa fa-circle-o"></i>
-                                        </div>
-                                        <h5 class="font-medium">PlotWeaver</h5>
-                                    </div>
-                                    <p class="text-xs text-muted">擅长优化故事结构和节奏，适合需要精心设计故事框架的小说。</p>
-                                </div>
-                                <div class="border border-gray-100 rounded-lg p-3">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-muted mr-2">
-                                            <i class="fa fa-circle-o"></i>
-                                        </div>
-                                        <h5 class="font-medium">NovelArchitect</h5>
-                                    </div>
-                                    <p class="text-xs text-muted">擅长构建长篇小说架构，适合百万字以上的大型小说项目。</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 内容创作模型 -->
-                        <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-all-300">
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    <h4 class="font-medium">内容创作</h4>
-                                    <p class="text-sm text-muted">选择用于生成章节内容的AI模型</p>
-                                </div>
-                                <div class="relative">
-                                    <select class="appearance-none bg-white border border-gray-200 rounded-lg px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                                        <option value="detail_master">DetailMaster - 擅长场景描写</option>
-                                        <option value="scene_crafter">SceneCrafter - 擅长场景构建</option>
-                                        <option value="prose_genius">ProseGenius - 擅长文学性描写</option>
-                                    </select>
-                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-muted">
-                                        <i class="fa fa-chevron-down text-xs"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="border border-gray-100 rounded-lg p-3 bg-light">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-primary mr-2">
-                                            <i class="fa fa-check"></i>
-                                        </div>
-                                        <h5 class="font-medium">DetailMaster</h5>
-                                    </div>
-                                    <p class="text-xs text-muted">擅长生成生动的场景描写和人物细节，适合需要丰富画面感的小说。</p>
-                                </div>
-                                <div class="border border-gray-100 rounded-lg p-3">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-muted mr-2">
-                                            <i class="fa fa-circle-o"></i>
-                                        </div>
-                                        <h5 class="font-medium">SceneCrafter</h5>
-                                    </div>
-                                    <p class="text-xs text-muted">擅长构建紧凑的场景结构和动态情节，适合快节奏的商业小说。</p>
-                                </div>
-                                <div class="border border-gray-100 rounded-lg p-3">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-muted mr-2">
-                                            <i class="fa fa-circle-o"></i>
-                                        </div>
-                                        <h5 class="font-medium">ProseGenius</h5>
-                                    </div>
-                                    <p class="text-xs text-muted">擅长文学性描写和优美的 prose，适合注重文笔的文学小说。</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 对话写作模型 -->
-                        <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-all-300">
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    <h4 class="font-medium">对话写作</h4>
-                                    <p class="text-sm text-muted">选择用于生成人物对话的AI模型</p>
-                                </div>
-                                <div class="relative">
-                                    <select class="appearance-none bg-white border border-gray-200 rounded-lg px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                                        <option value="convo_craft">ConvoCraft - 擅长自然对话</option>
-                                        <option value="dialogue_master">DialogueMaster - 擅长对话冲突</option>
-                                        <option value="character_voice">CharacterVoice - 擅长人物特色</option>
-                                    </select>
-                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-muted">
-                                        <i class="fa fa-chevron-down text-xs"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="border border-gray-100 rounded-lg p-3 bg-light">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-primary mr-2">
-                                            <i class="fa fa-check"></i>
-                                        </div>
-                                        <h5 class="font-medium">ConvoCraft</h5>
-                                    </div>
-                                    <p class="text-xs text-muted">擅长生成自然流畅的对话，符合日常交流习惯，适合现代都市题材。</p>
-                                </div>
-                                <div class="border border-gray-100 rounded-lg p-3">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-muted mr-2">
-                                            <i class="fa fa-circle-o"></i>
-                                        </div>
-                                        <h5 class="font-medium">DialogueMaster</h5>
-                                    </div>
-                                    <p class="text-xs text-muted">擅长设计充满冲突和张力的对话，适合情节驱动型小说。</p>
-                                </div>
-                                <div class="border border-gray-100 rounded-lg p-3">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-muted mr-2">
-                                            <i class="fa fa-circle-o"></i>
-                                        </div>
-                                        <h5 class="font-medium">CharacterVoice</h5>
-                                    </div>
-                                    <p class="text-xs text-muted">擅长保持人物独特的说话风格和语气，适合人物众多的复杂小说。</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 编辑润色模型 -->
-                        <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-all-300">
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    <h4 class="font-medium">编辑润色</h4>
-                                    <p class="text-sm text-muted">选择用于文本编辑和润色的AI模型</p>
-                                </div>
-                                <div class="relative">
-                                    <select class="appearance-none bg-white border border-gray-200 rounded-lg px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                                        <option value="polish_pro">PolishPro - 全面润色</option>
-                                        <option value="style_refiner">StyleRefiner - 风格统一</option>
-                                        <option value="clarity_booster">ClarityBooster - 提升清晰度</option>
-                                    </select>
-                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-muted">
-                                        <i class="fa fa-chevron-down text-xs"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="border border-gray-100 rounded-lg p-3 bg-light">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-primary mr-2">
-                                            <i class="fa fa-check"></i>
-                                        </div>
-                                        <h5 class="font-medium">PolishPro</h5>
-                                    </div>
-                                    <p class="text-xs text-muted">全面的文本润色，包括语法纠错、用词优化和句式调整，适合各类小说。</p>
-                                </div>
-                                <div class="border border-gray-100 rounded-lg p-3">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-muted mr-2">
-                                            <i class="fa fa-circle-o"></i>
-                                        </div>
-                                        <h5 class="font-medium">StyleRefiner</h5>
-                                    </div>
-                                    <p class="text-xs text-muted">统一文本风格，确保全文风格一致，适合需要特定文风的小说。</p>
-                                </div>
-                                <div class="border border-gray-100 rounded-lg p-3">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-muted mr-2">
-                                            <i class="fa fa-circle-o"></i>
-                                        </div>
-                                        <h5 class="font-medium">ClarityBooster</h5>
-                                    </div>
-                                    <p class="text-xs text-muted">提升文本清晰度和可读性，适合复杂情节或专业内容的小说。</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-soft p-6">
-                    <h3 class="font-bold text-lg mb-4">模型使用建议</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="border border-gray-100 rounded-lg p-4 hover:border-primary transition-all-300">
-                            <h4 class="font-medium mb-2">按平台选择</h4>
-                            <ul class="space-y-2 text-sm">
-                                <li class="flex items-start">
-                                    <i class="fa fa-check-circle text-primary mt-0.5 mr-2"></i>
-                                    <span><strong>番茄小说</strong>：推荐使用CreativeFlow（大纲）+ SceneCrafter（内容）+ DialogueMaster（对话）</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <i class="fa fa-check-circle text-primary mt-0.5 mr-2"></i>
-                                    <span><strong>七猫小说</strong>：推荐使用PlotWeaver（大纲）+ DetailMaster（内容）+ ConvoCraft（对话）</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <i class="fa fa-check-circle text-primary mt-0.5 mr-2"></i>
-                                    <span><strong>晋江文学城</strong>：推荐使用NovelArchitect（大纲）+ ProseGenius（内容）+ CharacterVoice（对话）</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="border border-gray-100 rounded-lg p-4 hover:border-primary transition-all-300">
-                            <h4 class="font-medium mb-2">按题材选择</h4>
-                            <ul class="space-y-2 text-sm">
-                                <li class="flex items-start">
-                                    <i class="fa fa-check-circle text-primary mt-0.5 mr-2"></i>
-                                    <span><strong>现代言情</strong>：推荐使用DetailMaster（内容）+ ConvoCraft（对话）</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <i class="fa fa-check-circle text-primary mt-0.5 mr-2"></i>
-                                    <span><strong>古代言情</strong>：推荐使用NovelArchitect（大纲）+ ProseGenius（内容）</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <i class="fa fa-check-circle text-primary mt-0.5 mr-2"></i>
-                                    <span><strong>悬疑推理</strong>：推荐使用PlotWeaver（大纲）+ SceneCrafter（内容）</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 质量检查页面 -->
-            <section id="quality-page" class="page hidden">
-                <div class="mb-6">
-                    <h2 class="text-2xl font-display font-bold mb-2">质量检查</h2>
-                    <p class="text-muted">检查您的作品是否符合平台要求，去敏感词，有平台风格</p>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-soft p-6 mb-8">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="font-bold text-lg">检查设置</h3>
-                        <button class="px-3 py-1 bg-primary text-white rounded-lg hover:bg-pink-600 transition-all-300">
-                            <i class="fa fa-play mr-1"></i>开始检查
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label for="quality-platform" class="block text-sm font-medium text-muted mb-2">目标平台</label>
-                            <select id="quality-platform" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
-                                <option value="">选择平台</option>
-                                <option value="tomato">番茄小说</option>
-                                <option value="qimao">七猫小说</option>
-                                <option value="jjwxc">晋江文学城</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="quality-content-type" class="block text-sm font-medium text-muted mb-2">检查内容类型</label>
-                            <select id="quality-content-type" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
-                                <option value="chapter">单章节</option>
-                                <option value="multiple">多章节</option>
-                                <option value="full">全文</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-muted mb-2">检查项目</label>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="flex items-center">
-                                <input type="checkbox" id="check-platform" name="check-items" value="platform" class="mr-2" checked>
-                                <label for="check-platform">平台规则合规性</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="checkbox" id="check-sensitive" name="check-items" value="sensitive" class="mr-2" checked>
-                                <label for="check-sensitive">敏感词过滤</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="checkbox" id="check-style" name="check-items" value="style" class="mr-2" checked>
-                                <label for="check-style">平台风格一致性</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="checkbox" id="check-character" name="check-items" value="character" class="mr-2" checked>
-                                <label for="check-character">人物设定一致性</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="checkbox" id="check-context" name="check-items" value="context" class="mr-2" checked>
-                                <label for="check-context">上下文连贯性</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="checkbox" id="check-outline" name="check-items" value="outline" class="mr-2" checked>
-                                <label for="check-outline">符合大纲要求</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="checkbox" id="check-grammar" name="check-items" value="grammar" class="mr-2" checked>
-                                <label for="check-grammar">语法与用词</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="checkbox" id="check-plagiarism" name="check-items" value="plagiarism" class="mr-2">
-                                <label for="check-plagiarism">原创性检测</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-muted mb-2">检查内容</label>
-                        <div class="border border-gray-200 rounded-lg p-4">
-                            <div class="mb-4">
-                                <div class="flex items-center justify-between mb-2">
-                                    <h4 class="font-medium">选择文件</h4>
-                                    <button class="text-primary hover:text-pink-700 text-sm">
-                                        <i class="fa fa-upload mr-1"></i>上传文件
-                                    </button>
-                                </div>
-                                <div class="border border-dashed border-gray-300 rounded-lg p-4 flex items-center justify-center">
-                                    <span class="text-sm text-muted">拖拽文件到此处，或点击上传</span>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex items-center justify-between mb-2">
-                                    <h4 class="font-medium">或直接输入文本</h4>
-                                </div>
-                                <textarea rows="6" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="在此输入需要检查的文本内容..."></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-end space-x-4">
-                        <button class="px-6 py-2 border border-gray-200 rounded-lg text-muted hover:bg-light transition-all-300">取消</button>
-                        <button class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-pink-600 transition-all-300">开始检查</button>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-soft p-6">
-                    <h3 class="font-bold text-lg mb-4">检查结果</h3>
-                    <div class="border border-gray-200 rounded-lg overflow-hidden">
-                        <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
-                            <h4 class="font-medium">《总裁的契约甜心》第2章检查报告</h4>
-                            <div class="flex items-center">
-                                <span class="px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded-full text-xs mr-3">需修改</span>
-                                <span class="text-xs text-muted">完成时间：2025-11-24 15:30</span>
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                                <div class="flex flex-col items-center p-3 bg-green-50 rounded-lg">
-                                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-success mb-2">
-                                        <i class="fa fa-check"></i>
-                                    </div>
-                                    <span class="text-sm font-medium">平台规则</span>
-                                    <span class="text-xs text-muted">符合要求</span>
-                                </div>
-                                <div class="flex flex-col items-center p-3 bg-yellow-50 rounded-lg">
-                                    <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-warning mb-2">
-                                        <i class="fa fa-exclamation"></i>
-                                    </div>
-                                    <span class="text-sm font-medium">敏感词</span>
-                                    <span class="text-xs text-muted">1处需修改</span>
-                                </div>
-                                <div class="flex flex-col items-center p-3 bg-green-50 rounded-lg">
-                                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-success mb-2">
-                                        <i class="fa fa-check"></i>
-                                    </div>
-                                    <span class="text-sm font-medium">风格一致性</span>
-                                    <span class="text-xs text-muted">符合要求</span>
-                                </div>
-                                <div class="flex flex-col items-center p-3 bg-green-50 rounded-lg">
-                                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-success mb-2">
-                                        <i class="fa fa-check"></i>
-                                    </div>
-                                    <span class="text-sm font-medium">人物一致性</span>
-                                    <span class="text-xs text-muted">符合要求</span>
-                                </div>
-                            </div>
-
-                            <div class="border-t border-gray-100 pt-4 mb-6">
-                                <h5 class="font-medium mb-3">问题详情</h5>
-                                <div class="space-y-4">
-                                    <div class="border border-yellow-200 rounded-lg p-3 bg-yellow-50">
-                                        <div class="flex items-start">
-                                            <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center text-warning mr-3 mt-0.5">
-                                                <i class="fa fa-exclamation-triangle"></i>
-                                            </div>
-                                            <div>
-                                                <h6 class="font-medium text-warning">敏感词检测</h6>
-                                                <p class="text-sm text-muted mb-2">检测到1处敏感内容</p>
-                                                <div class="bg-white p-3 rounded-lg border border-gray-100">
-                                                    <p class="text-sm">原文：<span class="bg-red-100 px-1 rounded">他的脸色瞬间变得阴沉，眼中闪过一丝不易察觉的慌乱。</span></p>
-                                                    <p class="text-sm mt-2">建议修改为：<span class="bg-green-100 px-1 rounded">他的脸色瞬间变得阴沉，眼中闪过一丝不易察觉的波动。</span></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="border-t border-gray-100 pt-4">
-                                <h5 class="font-medium mb-3">改进建议</h5>
-                                <ul class="space-y-2 text-sm">
-                                    <li class="flex items-start">
-                                        <i class="fa fa-info-circle text-info mt-0.5 mr-2"></i>
-                                        <span>建议增加更多对话，提高章节的节奏感和可读性。</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <i class="fa fa-info-circle text-info mt-0.5 mr-2"></i>
-                                        <span>可以适当增加一些环境描写，增强场景的画面感。</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <i class="fa fa-info-circle text-info mt-0.5 mr-2"></i>
-                                        <span>建议在章节末尾增加一个更强的悬念，吸引读者继续阅读下一章。</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- 右侧工具栏 -->
-        <aside class="w-0 lg:w-64 bg-white shadow-soft h-[calc(100vh-64px)] sticky top-16 transition-all duration-300 overflow-hidden" id="right-sidebar">
-            <div class="p-4 border-b border-gray-100">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-medium">创作助手</h3>
-                    <button id="close-sidebar" class="p-1 rounded-full hover:bg-light transition-all-300 lg:hidden">
-                        <i class="fa fa-times text-muted"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="p-4">
-                <div class="mb-6">
-                    <h4 class="text-sm font-medium text-muted mb-2">写作提示</h4>
-                    <div class="border border-gray-100 rounded-lg p-3 bg-light">
-                        <p class="text-sm italic">今天的写作提示：在描写人物情感时，尝试使用环境描写来烘托情绪，而不是直接告诉读者角色的感受。</p>
-                    </div>
-                </div>
-                <div class="mb-6">
-                    <h4 class="text-sm font-medium text-muted mb-2">平台风格指南</h4>
-                    <div class="space-y-2">
-                        <div class="border border-gray-100 rounded-lg p-3 hover:border-primary transition-all-300 cursor-pointer">
-                            <h5 class="font-medium text-primary">番茄小说风格</h5>
-                            <p class="text-xs text-muted mt-1">节奏快，爽点密集，开篇即高潮</p>
-                        </div>
-                        <div class="border border-gray-100 rounded-lg p-3 hover:border-primary transition-all-300 cursor-pointer">
-                            <h5 class="font-medium">七猫小说风格</h5>
-                            <p class="text-xs text-muted mt-1">情节曲折，反转多，情感冲突强</p>
-                        </div>
-                        <div class="border border-gray-100 rounded-lg p-3 hover:border-primary transition-all-300 cursor-pointer">
-                            <h5 class="font-medium">晋江文学城风格</h5>
-                            <p class="text-xs text-muted mt-1">注重文笔，情感细腻，人物塑造立体</p>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="text-sm font-medium text-muted mb-2">常用工具</h4>
-                    <div class="space-y-2">
-                        <button class="w-full flex items-center justify-between px-3 py-2 border border-gray-100 rounded-lg text-sm hover:border-primary hover:bg-light transition-all-300">
-                            <span>敏感词检测</span>
-                            <i class="fa fa-shield text-muted"></i>
-                        </button>
-                        <button class="w-full flex items-center justify-between px-3 py-2 border border-gray-100 rounded-lg text-sm hover:border-primary hover:bg-light transition-all-300">
-                            <span>情节生成器</span>
-                            <i class="fa fa-random text-muted"></i>
-                        </button>
-                        <button class="w-full flex items-center justify-between px-3 py-2 border border-gray-100 rounded-lg text-sm hover:border-primary hover:bg-light transition-all-300">
-                            <span>人物对话生成</span>
-                            <i class="fa fa-comments text-muted"></i>
-                        </button>
-                        <button class="w-full flex items-center justify-between px-3 py-2 border border-gray-100 rounded-lg text-sm hover:border-primary hover:bg-light transition-all-300">
-                            <span>金句库</span>
-                            <i class="fa fa-star text-muted"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </aside>
-    </main>
-
-    <!-- 底部状态栏 -->
-    <footer class="bg-white shadow-soft py-2">
-        <div class="container mx-auto px-4 flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-                <button id="toggle-sidebar" class="p-1 rounded-full hover:bg-light transition-all-300 lg:hidden">
-                    <i class="fa fa-chevron-right text-muted"></i>
-                </button>
-                <span class="text-xs text-muted">© 2025 女频小说创作引擎</span>
-            </div>
-            <div class="flex items-center space-x-4">
-                <button class="p-1 rounded-full hover:bg-light transition-all-300">
-                    <i class="fa fa-question-circle text-muted"></i>
-                </button>
-                <button class="p-1 rounded-full hover:bg-light transition-all-300">
-                    <i class="fa fa-cog text-muted"></i>
+                
+                <button class="btn" id="generate-story-btn">
+                    <i class="fas fa-magic"></i> 生成故事梗概
                 </button>
             </div>
         </div>
-    </footer>
-
-    <!-- JavaScript -->
+        
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-cogs"></i> 黄金三章生成器</h2>
+            <div class="card-content">
+                <div class="input-group">
+                    <label for="chapter-style">选择生成风格</label>
+                    <select id="chapter-style">
+                        <option value="fast">快节奏（番茄）</option>
+                        <option value="balanced">平衡节奏（七猫）</option>
+                        <option value="deep">深度刻画（晋江）</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label>平台适配</label>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <span class="platform-badge platform-badge-tomato">番茄</span>
+                        <span class="platform-badge platform-badge-qimao">七猫</span>
+                        <span class="platform-badge platform-badge-jinping">晋江</span>
+                    </div>
+                </div>
+                
+                <button class="btn" id="generate-chapters-btn">
+                    <i class="fas fa-book-open"></i> 生成黄金三章
+                </button>
+                
+                <div class="output-area" id="chapters-output">
+                    <h3><i class="fas fa-file-alt"></i> 生成的黄金三章</h3>
+                    <p>点击"生成黄金三章"按钮，系统将自动生成前三章内容，确保快速引入冲突并建立人物形象。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-robot"></i> AI模型选择</h2>
+            <div class="card-content">
+                <div class="input-group">
+                    <label>选择AI创作模型</label>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <span class="model-badge">DetailMaster</span>
+                        <span class="model-badge">ProseGenius</span>
+                        <span class="model-badge">DialogueMaster</span>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>平台风格偏好</label>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <span class="platform-badge platform-badge-tomato">番茄：强冲突、快节奏</span>
+                        <span class="platform-badge platform-badge-qimao">七猫：情感细腻、节奏适中</span>
+                        <span class="platform-badge platform-badge-jinping">晋江：文笔优美、人物深度</span>
+                    </div>
+                </div>
+                
+                <button class="btn btn-secondary" id="select-model-btn">
+                    <i class="fas fa-cog"></i> 确认AI模型
+                </button>
+                
+                <div class="error-message" id="model-error" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i> 请先生成故事梗概和黄金三章
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-check-circle"></i> 质量检查与发布</h2>
+            <div class="card-content">
+                <div class="input-group">
+                    <label>选择发布平台</label>
+                    <select id="publish-platform">
+                        <option value="">请选择平台</option>
+                        <option value="tomato">番茄小说</option>
+                        <option value="qimao">七猫小说</option>
+                        <option value="jinping">晋江文学城</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label>检查项目</label>
+                    <ul style="padding-left: 20px; margin-top: 8px;">
+                        <li>✓ 内容符合平台规则</li>
+                        <li>✓ 无敏感词</li>
+                        <li>✓ 人物不跑偏</li>
+                        <li>✓ 有悬念和反转</li>
+                    </ul>
+                </div>
+                
+                <button class="btn btn-success" id="publish-btn">
+                    <i class="fas fa-upload"></i> 发布到平台
+                </button>
+            </div>
+        </div>
+        
+        <div class="status-bar" id="status-bar">
+            <i class="fas fa-sync-alt"></i> 准备就绪！点击按钮开始创作
+        </div>
+    </div>
+    
     <script>
+        // 确保DOM加载完成
         document.addEventListener('DOMContentLoaded', function() {
-            // 页面切换
-            const navLinks = document.querySelectorAll('.nav-link');
-            const pages = document.querySelectorAll('.page');
-
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // 更新导航链接状态
-                    navLinks.forEach(item => {
-                        item.classList.remove('active', 'text-primary', 'border-r-4', 'border-primary', 'bg-pink-50');
-                        item.classList.add('text-muted', 'hover:text-primary', 'hover:bg-pink-50');
-                    });
-                    
-                    this.classList.add('active', 'text-primary', 'border-r-4', 'border-primary', 'bg-pink-50');
-                    this.classList.remove('text-muted', 'hover:text-primary', 'hover:bg-pink-50');
-                    
-                    // 显示对应页面
-                    const targetId = this.getAttribute('href').substring(1) + '-page';
-                    
-                    pages.forEach(page => {
-                        page.classList.add('hidden');
-                    });
-                    
-                    document.getElementById(targetId).classList.remove('hidden');
-                });
-            });
-
-            // 平台选项选择
-            const platformOptions = document.querySelectorAll('.platform-option');
+            // 初始化状态
+            const statusBar = document.getElementById('status-bar');
+            const modelError = document.getElementById('model-error');
             
-            platformOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    const radio = this.querySelector('input[type="radio"]');
-                    radio.checked = true;
-                    
-                    platformOptions.forEach(opt => {
-                        opt.classList.remove('border-primary', 'bg-pink-50');
-                    });
-                    
-                    this.classList.add('border-primary', 'bg-pink-50');
-                });
-            });
-
-            // 右侧边栏切换
-            const toggleSidebarBtn = document.getElementById('toggle-sidebar');
-            const closeSidebarBtn = document.getElementById('close-sidebar');
-            const rightSidebar = document.getElementById('right-sidebar');
-            
-            toggleSidebarBtn.addEventListener('click', function() {
-                if (rightSidebar.classList.contains('w-0')) {
-                    rightSidebar.classList.remove('w-0');
-                    rightSidebar.classList.add('w-64');
-                    toggleSidebarBtn.innerHTML = '<i class="fa fa-chevron-left text-muted"></i>';
-                } else {
-                    rightSidebar.classList.remove('w-64');
-                    rightSidebar.classList.add('w-0');
-                    toggleSidebarBtn.innerHTML = '<i class="fa fa-chevron-right text-muted"></i>';
+            // 生成故事梗概
+            document.getElementById('generate-story-btn').addEventListener('click', function() {
+                const title = document.getElementById('story-title').value;
+                const genre = document.getElementById('story-genre').value;
+                const summary = document.getElementById('story-summary').value;
+                
+                if (!title || !genre || !summary) {
+                    statusBar.textContent = '请填写所有必填字段！';
+                    statusBar.style.background = '#e74c3c';
+                    setTimeout(() => {
+                        statusBar.style.background = 'var(--primary)';
+                        statusBar.textContent = '准备就绪！点击按钮开始创作';
+                    }, 3000);
+                    return;
                 }
-            });
-            
-            closeSidebarBtn.addEventListener('click', function() {
-                rightSidebar.classList.remove('w-64');
-                rightSidebar.classList.add('w-0');
-                toggleSidebarBtn.innerHTML = '<i class="fa fa-chevron-right text-muted"></i>';
-            });
-
-            // 新建项目表单提交
-            const newProjectForm = document.getElementById('new-project-form');
-            
-            if (newProjectForm) {
-                newProjectForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    // 模拟表单提交
-                    alert('项目创建成功！');
-                    
-                    // 切换到仪表盘页面
-                    navLinks.forEach(item => {
-                        item.classList.remove('active', 'text-primary', 'border-r-4', 'border-primary', 'bg-pink-50');
-                        item.classList.add('text-muted', 'hover:text-primary', 'hover:bg-pink-50');
-                    });
-                    
-                    document.querySelector('.nav-link[href="#dashboard"]').classList.add('active', 'text-primary', 'border-r-4', 'border-primary', 'bg-pink-50');
-                    document.querySelector('.nav-link[href="#dashboard"]').classList.remove('text-muted', 'hover:text-primary', 'hover:bg-pink-50');
-                    
-                    pages.forEach(page => {
-                        page.classList.add('hidden');
-                    });
-                    
-                    document.getElementById('dashboard-page').classList.remove('hidden');
-                });
-            }
-
-            // AI模型设置页面导航
-            document.querySelector('.nav-link[href="#ai-models"]').addEventListener('click', function(e) {
-                e.preventDefault();
                 
-                // 更新导航链接状态
-                navLinks.forEach(item => {
-                    item.classList.remove('active', 'text-primary', 'border-r-4', 'border-primary', 'bg-pink-50');
-                    item.classList.add('text-muted', 'hover:text-primary', 'hover:bg-pink-50');
-                });
-                
-                this.classList.add('active', 'text-primary', 'border-r-4', 'border-primary', 'bg-pink-50');
-                this.classList.remove('text-muted', 'hover:text-primary', 'hover:bg-pink-50');
-                
-                // 显示AI模型设置页面
-                pages.forEach(page => {
-                    page.classList.add('hidden');
-                });
-                
-                document.getElementById('ai-models-page').classList.remove('hidden');
-            });
-
-            // 模型选择逻辑
-            const modelSelectors = document.querySelectorAll('select');
-            
-            modelSelectors.forEach(selector => {
-                selector.addEventListener('change', function() {
-                    const selectedOption = this.options[this.selectedIndex];
-                    const modelName = selectedOption.text.split('（')[0];
-                    const modelDescription = this.closest('.border').querySelector('.text-sm') || null;
-                    
-                    // 更新模型信息显示
-                    if (modelDescription) {
-                        const modelInfo = getModelInfo(this.value);
-                        if (modelInfo) {
-                            modelDescription.innerHTML = `<strong>当前模型：${modelName}</strong> - ${modelInfo.description}`;
-                        }
-                    }
-                    
-                    // 保存用户选择到本地存储
-                    const modelType = this.closest('section').id.replace('-page', '');
-                    localStorage.setItem(`preferred_model_${modelType}`, this.value);
-                    
-                    // 显示选择成功提示
-                    showToast(`已选择 ${modelName} 模型`);
-                });
-            });
-
-            // 获取模型信息
-            function getModelInfo(modelId) {
-                const modelInfo = {
-                    'creative_flow': {
-                        name: 'CreativeFlow',
-                        description: '擅长生成连贯的情节线和人物弧线，适合需要强情节连贯性的小说。'
-                    },
-                    'plot_weaver': {
-                        name: 'PlotWeaver',
-                        description: '擅长优化故事结构和节奏，适合需要精心设计故事框架的小说。'
-                    },
-                    'novel_architect': {
-                        name: 'NovelArchitect',
-                        description: '擅长构建长篇小说架构，适合百万字以上的大型小说项目。'
-                    },
-                    'detail_master': {
-                        name: 'DetailMaster',
-                        description: '擅长生成生动的场景描写和人物细节，适合需要丰富画面感的小说。'
-                    },
-                    'scene_crafter': {
-                        name: 'SceneCrafter',
-                        description: '擅长构建紧凑的场景结构和动态情节，适合快节奏的商业小说。'
-                    },
-                    'prose_genius': {
-                        name: 'ProseGenius',
-                        description: '擅长文学性描写和优美的 prose，适合注重文笔的文学小说。'
-                    },
-                    'convo_craft': {
-                        name: 'ConvoCraft',
-                        description: '擅长生成自然流畅的对话，符合日常交流习惯，适合现代都市题材。'
-                    },
-                    'dialogue_master': {
-                        name: 'DialogueMaster',
-                        description: '擅长设计充满冲突和张力的对话，适合情节驱动型小说。'
-                    },
-                    'character_voice': {
-                        name: 'CharacterVoice',
-                        description: '擅长保持人物独特的说话风格和语气，适合人物众多的复杂小说。'
-                    },
-                    'polish_pro': {
-                        name: 'PolishPro',
-                        description: '全面的文本润色，包括语法纠错、用词优化和句式调整，适合各类小说。'
-                    },
-                    'style_refiner': {
-                        name: 'StyleRefiner',
-                        description: '统一文本风格，确保全文风格一致，适合需要特定文风的小说。'
-                    },
-                    'clarity_booster': {
-                        name: 'ClarityBooster',
-                        description: '提升文本清晰度和可读性，适合复杂情节或专业内容的小说。'
-                    }
+                // 模拟生成故事梗概
+                const story = {
+                    title: title,
+                    genre: genre,
+                    summary: summary,
+                    mainCharacters: ['林薇', '顾言', '苏晴'],
+                    conflict: "职场新人林薇发现公司核心项目被篡改，面对上司顾言的打压和闺蜜苏晴的背叛，她必须在30天内证明自己并夺回项目"
                 };
                 
-                return modelInfo[modelId] || null;
-            }
-
-            // 显示提示消息
-            function showToast(message) {
-                // 创建提示元素
-                const toast = document.createElement('div');
-                toast.className = 'fixed bottom-4 right-4 bg-primary text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in';
-                toast.textContent = message;
+                // 更新状态
+                statusBar.textContent = '故事梗概生成成功！';
+                statusBar.style.background = '#2ecc71';
                 
-                // 添加到页面
-                document.body.appendChild(toast);
+                // 保存到本地存储
+                localStorage.setItem('storyData', JSON.stringify(story));
                 
-                // 3秒后移除
+                // 显示提示
                 setTimeout(() => {
-                    toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
-                    setTimeout(() => {
-                        document.body.removeChild(toast);
-                    }, 300);
-                }, 3000);
-            }
-
-            // 主题切换
-            const themeToggle = document.getElementById('theme-toggle');
-            const body = document.body;
-            
-            themeToggle.addEventListener('click', function() {
-                if (body.classList.contains('bg-light')) {
-                    body.classList.remove('bg-light', 'text-dark');
-                    body.classList.add('bg-gray-900', 'text-gray-100');
-                    themeToggle.innerHTML = '<i class="fa fa-sun-o text-yellow-400"></i>';
-                } else {
-                    body.classList.remove('bg-gray-900', 'text-gray-100');
-                    body.classList.add('bg-light', 'text-dark');
-                    themeToggle.innerHTML = '<i class="fa fa-moon-o text-muted"></i>';
-                }
+                    statusBar.style.background = 'var(--primary)';
+                    statusBar.textContent = '准备就绪！点击按钮开始创作';
+                }, 2000);
             });
+            
+            // 生成黄金三章
+            document.getElementById('generate-chapters-btn').addEventListener('click', function() {
+                const storyData = localStorage.getItem('storyData');
+                if (!storyData) {
+                    statusBar.textContent = '请先生成故事梗概！';
+                    statusBar.style.background = '#e74c3c';
+                    setTimeout(() => {
+                        statusBar.style.background = 'var(--primary)';
+                        statusBar.textContent = '准备就绪！点击按钮开始创作';
+                    }, 3000);
+                    return;
+                }
+                
+                const story = JSON.parse(storyData);
+                const style = document.getElementById('chapter-style').value;
+                const platform = document.getElementById('publish-platform').value;
+                
+                // 模拟生成黄金三章
+                const chapters = generateGoldenChapters(story, style, platform);
+                
+                // 更新输出区域
+                const output = document.getElementById('chapters-output');
+                output.innerHTML = `<h3><i class="fas fa-file-alt"></i> 生成的黄金三章 (${platform ? '适配' + platform.toUpperCase() : '通用'})</h3>`;
+                
+                chapters.forEach((chapter, index) => {
+                    output.innerHTML += `<h4>第${index + 1}章：${chapter.title}</h4>`;
+                    output.innerHTML += `<p>${chapter.content}</p>`;
+                });
+                
+                // 更新状态
+                statusBar.textContent = '黄金三章生成成功！';
+                statusBar.style.background = '#2ecc71';
+                
+                // 显示模型错误提示
+                modelError.style.display = 'none';
+                
+                setTimeout(() => {
+                    statusBar.style.background = 'var(--primary)';
+                    statusBar.textContent = '准备就绪！点击按钮开始创作';
+                }, 2000);
+            });
+            
+            // 选择AI模型
+            document.getElementById('select-model-btn').addEventListener('click', function() {
+                const storyData = localStorage.getItem('storyData');
+                if (!storyData) {
+                    modelError.style.display = 'block';
+                    statusBar.textContent = '请先生成故事梗概！';
+                    statusBar.style.background = '#e74c3c';
+                    setTimeout(() => {
+                        statusBar.style.background = 'var(--primary)';
+                        statusBar.textContent = '准备就绪！点击按钮开始创作';
+                    }, 3000);
+                    return;
+                }
+                
+                statusBar.textContent = 'AI模型已确认！';
+                statusBar.style.background = '#2ecc71';
+                
+                setTimeout(() => {
+                    statusBar.style.background = 'var(--primary)';
+                    statusBar.textContent = '准备就绪！点击按钮开始创作';
+                }, 2000);
+            });
+            
+            // 发布到平台
+            document.getElementById('publish-btn').addEventListener('click', function() {
+                const platform = document.getElementById('publish-platform').value;
+                if (!platform) {
+                    statusBar.textContent = '请选择发布平台！';
+                    statusBar.style.background = '#e74c3c';
+                    setTimeout(() => {
+                        statusBar.style.background = 'var(--primary)';
+                        statusBar.textContent = '准备就绪！点击按钮开始创作';
+                    }, 3000);
+                    return;
+                }
+                
+                // 模拟发布过程
+                statusBar.textContent = `正在发布到${platform === 'tomato' ? '番茄小说' : platform === 'qimao' ? '七猫小说' : '晋江文学城'}...`;
+                statusBar.style.background = '#3498db';
+                
+                // 模拟耗时
+                setTimeout(() => {
+                    statusBar.textContent = `发布成功！已适配${platform === 'tomato' ? '番茄' : platform === 'qimao' ? '七猫' : '晋江'}平台风格`;
+                    statusBar.style.background = '#2ecc71';
+                    
+                    // 2秒后恢复状态
+                    setTimeout(() => {
+                        statusBar.style.background = 'var(--primary)';
+                        statusBar.textContent = '准备就绪！点击按钮开始创作';
+                    }, 2000);
+                }, 2500);
+            });
+            
+            // 生成黄金三章的模拟函数
+            function generateGoldenChapters(story, style, platform) {
+                const platformStyles = {
+                    tomato: "快节奏、强冲突、每章结尾留悬念",
+                    qimao: "情感细腻、节奏适中、注重人物关系",
+                    jinping: "文笔优美、人物深度、内心描写丰富"
+                };
+                
+                const styleDescription = platformStyles[platform] || "平衡节奏，注重冲突与人物塑造";
+                
+                return [
+                    {
+                        title: "第一章：被陷害的实习生",
+                        content: `清晨七点，林薇踩着高跟鞋冲进公司，手里紧握着那份被篡改的项目方案。她记得昨晚加班到凌晨两点，确认过所有数据。但此刻，她看到的却是完全不同的内容——核心数据被篡改，项目优势被抹去。\n\n"林薇，你确定这是你做的？"顾言的声音从身后传来，带着不容置疑的威严。他手里拿着那份"错误"的方案，眼神锐利如刀。\n\n林薇的心跳如鼓，她知道这是陷阱，但此刻她连解释的机会都没有。她低头看着自己颤抖的手，想起昨天闺蜜苏晴的那句"顾总最近在找机会，你小心点"。难道...苏晴也参与了？`
+                    },
+                    {
+                        title: "第二章：背叛与反击",
+                        content: `林薇没有选择沉默。她迅速调出自己的备份，证明数据被篡改。但顾言却冷笑："备份？你有证据吗？"会议室里，同事们窃窃私语，目光如针扎在她身上。\n\n"我有。"林薇平静地说，"我昨晚11点45分的电脑截图，显示数据被修改。"\n\n顾言脸色微变，但很快恢复镇定。"那就证明给我看。"\n\n林薇没有退缩，她打开电脑，调出证据。就在这一刻，她发现苏晴在角落里偷偷抹泪。是巧合，还是...她也知情？\n\n"苏晴，你为什么...？"林薇的声音有些颤抖。苏晴摇头，泪水滑落："我也是被逼的，顾总说如果我不配合，就让你失去晋升机会。"`
+                    },
+                    {
+                        title: "第三章：暗流涌动",
+                        content: `林薇的反击让顾言的计划受挫，但并未结束。当晚，她收到匿名邮件，里面是她与顾言的私人对话记录——那些被剪辑的片段，足以让她身败名裂。\n\n"林薇，你太天真了。"顾言的声音在电话里响起，"你以为能赢过我？"\n\n林薇没有回答，只是默默保存了所有证据。她知道，真正的战斗才刚刚开始。而苏晴的背叛，让她明白职场不只是能力的较量，更是人心的博弈。\n\n她打开电脑，开始整理所有线索。窗外，城市的灯火璀璨，而她的内心，正从绝望中燃起希望之火。`
+                    }
+                ];
+            }
         });
     </script>
 </body>
